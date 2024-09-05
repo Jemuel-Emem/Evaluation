@@ -13,13 +13,18 @@ return new class extends Migration
     {
         Schema::create('ratings', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
             $table->string('eventname');
-            $table->string('stronglyagree');
-            $table->string('agree');
-            $table->string('moderatelyagree');
-            $table->string('disagree');
-            $table->string('strongdisagree');
+            $table->integer('stronglyagree')->default(0);
+            $table->integer('agree')->default(0);
+            $table->integer('moderatelyagree')->default(0);
+            $table->integer('disagree')->default(0);
+            $table->integer('strongdisagree')->default(0);
+            $table->string('status')->default('Pending');
             $table->timestamps();
+
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

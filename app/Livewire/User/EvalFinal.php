@@ -14,6 +14,8 @@ class EvalFinal extends Component
     public $questionid, $eventname;
     public $ratings = [];
 
+    public $hasEvaluated = false;
+
     public function mount($questionid = null)
     {
         $this->questionid = $questionid;
@@ -21,19 +23,36 @@ class EvalFinal extends Component
         if ($selectedQuestion) {
             $this->eventname = $selectedQuestion->eventname;
         }
+
+        // Check if the current user has already evaluated this event
+        $existingRating = ratings::where('eventname', $this->eventname)
+            ->where('user_id', auth()->id())  // Add this to check per user
+            ->where('status', 'Completed')
+            ->first();
+
+        if ($existingRating) {
+            $this->hasEvaluated = true;
+        }
     }
+
 
     public function submitEvaluation()
     {
-        $meanRatings = $this->calculateMeanRatings();
+        if ($this->hasEvaluated) {
+            $this->dialog()->error(
+                $title = 'Already Evaluated!',
+                $description = 'You have already submitted an evaluation for this event.'
+            );
+            return;
+        }
 
+        $meanRatings = $this->calculateMeanRatings();
 
         $stronglyAgreeCount = 0;
         $agreeCount = 0;
         $moderatelyAgreeCount = 0;
         $disagreeCount = 0;
         $stronglyDisagreeCount = 0;
-
 
         foreach ($meanRatings as $rating) {
             switch ($rating['category']) {
@@ -55,26 +74,31 @@ class EvalFinal extends Component
             }
         }
 
-
-
-
         ratings::create([
+            'user_id' => auth()->id(),
             'eventname' => $this->eventname,
             'stronglyagree' => $stronglyAgreeCount,
             'agree' => $agreeCount,
             'moderatelyagree' => $moderatelyAgreeCount,
             'disagree' => $disagreeCount,
-            'strongdisagree'=>$stronglyDisagreeCount
+            'strongdisagree' => $stronglyDisagreeCount,
+            'status' => 'Completed',
         ]);
-        dd("done");
 
+        $this->dialog()->success(
+            $title = 'Evaluation Saved!',
+            $description = 'Your evaluation has been successfully submitted. Thank you for your feedback!'
+        );
+
+        $this->hasEvaluated = true;
     }
+
     public function calculateMeanRatings()
     {
         $meanRatings = [];
 
         foreach ($this->ratings as $questionId => $rating) {
-            // Convert to an array if it's not already
+
             if (!is_array($rating)) {
                 $rating = [$rating];
             }
