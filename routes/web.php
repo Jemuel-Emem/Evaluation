@@ -70,7 +70,7 @@ Route::middleware([
 
      });
 
-Route::view('/', 'welcome');
+     Route::view('/', 'welcome');
 
 // Route::view('dashboard', 'dashboard')
 //     ->middleware(['auth', 'verified'])
