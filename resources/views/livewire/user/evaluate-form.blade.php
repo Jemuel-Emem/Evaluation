@@ -1,5 +1,5 @@
-<div class="p-6 bg-gray-100">
-    <span class="underline text-2xl font-extrabold text-gray-800 mb-6 block">Events to Evaluate</span>
+<div class="p-6">
+    <span class=" text-2xl font-extrabold text-white mb-6 block">Events to Evaluate</span>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-4">
         @foreach($question as $quest)
         <x-card class="h-full bg-white shadow-lg rounded-lg overflow-hidden transform transition duration-500 hover:scale-105">

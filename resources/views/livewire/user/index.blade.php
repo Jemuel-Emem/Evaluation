@@ -3,11 +3,11 @@
     <div class="px-8 py-24 mx-auto md:px-12 lg:px-32 max-w-7xl">
       <div class="grid items-center grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-24">
         <div class="md:order-first">
-          <h1 class="text-4xl font-semibold tracking-tighter text-gray-900 text-balance">
+          <h1 class="text-4xl font-semibold tracking-tighter text-white text-balance">
             EventConnect: Simplifying Event,
-            <span class="text-gray-600">Evaluation with Precision</span>
+            <span class="text-white">Evaluation with Precision</span>
           </h1>
-          <p class="mt-4 text-base font-medium text-gray-500">
+          <p class="mt-4 text-base font-medium text-white">
             Introducing EventConnect, the ultimate evaluation system tailored for SKSU. Designed to streamline the process of gathering and analyzing feedback, EventConnect ensures every aspect of your school's events is meticulously assessed. With its user-friendly interface and robust features, SKSU can effortlessly collect insights, identify strengths, and pinpoint areas for improvement.
             Elevate your event planning and execution with EventConnect, and make every event at SKSU a resounding success.
           </p>

@@ -13,15 +13,32 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <!-- Custom Styles -->
+        <style>
+            body {
+                margin: 0;
+                font-family: 'Figtree', sans-serif;
+                background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                    url('{{ asset('images/bg_sksu.jpg') }}') no-repeat center center fixed;
+                background-size: cover;
+                color: white;
+            }
+            .card-container {
+                background-color: rgba(255, 255, 255, 0.9); /* Slight opacity for card background */
+            }
+        </style>
     </head>
-    <body class="font-sans text-gray-900 antialiased bg-cover bg-center bg-gradient-to-r from-green-400 to-green-600" style="">
-        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 bg-opacity-50">
+    <body class="font-sans text-gray-900 antialiased">
+        <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0">
+            <!-- Header Section -->
             <div class="flex items-center flex-col">
                 <img src="{{ asset('images/logo.jpg') }}" alt="Logo" class="h-16 w-auto mb-4">
-                <span class="text-4xl font-extrabold text-center">" EVALUATE "</span>
+                <span class="text-4xl font-extrabold text-center text-white">" EVALUATE "</span>
             </div>
 
-            <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
+            <!-- Card Section -->
+            <div class="w-full sm:max-w-md mt-6 px-6 py-4 shadow-md overflow-hidden sm:rounded-lg card-container">
                 {{ $slot }}
             </div>
         </div>
