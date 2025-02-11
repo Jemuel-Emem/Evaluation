@@ -1,25 +1,20 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <!-- Filter Section -->
-    {{-- <div class="mb-6">
-        <label for="eventFilter" class="block text-lg font-semibold text-gray-700">Select Event</label>
-        <div class="flex items-center space-x-4">
-            <select wire:model="selectedEvent" id="eventFilter" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-                <option value="">All Events</option>
-                @foreach($eventsList as $event)
-                    <option value="{{ $event->eventname }}">{{ $event->eventname }}</option>
-                @endforeach
-            </select>
 
-            <button wire:click="view" class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-md hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">View</button>
-        </div>
-    </div> --}}
-
-    <!-- Event Ratings Charts -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-6">
         @foreach ($eventRatings as $index => $event)
             <div class="bg-white shadow-md rounded-lg p-6 border border-gray-200">
-                <h3 class="text-xl font-semibold mb-4 text-gray-800">Event Name:{{ $event->eventname }}</h3>
-                Total Users Evaluated: {{ $event->total_responses }}
+                <h3 class="text-xl font-semibold mb-4 text-gray-800">Event Name: {{ $event->eventname }}</h3>
+
+                <p class="text-gray-700"><strong>Total Users Evaluated:</strong> {{ $event->total_responses }}</p>
+
+                <div class="mt-4">
+                    <p class="text-green-600">Strongly Agree: <strong>{{ $event->stronglyagree }}</strong></p>
+                    <p class="text-blue-600">Agree: <strong>{{ $event->agree }}</strong></p>
+                    <p class="text-yellow-600">Moderately Agree: <strong>{{ $event->moderatelyagree }}</strong></p>
+                    <p class="text-red-600">Disagree: <strong>{{ $event->disagree }}</strong></p>
+                    <p class="text-purple-600">Strongly Disagree: <strong>{{ $event->strongdisagree }}</strong></p>
+                </div>
+
                 <canvas id="chart{{ $index }}" class="w-full h-56"></canvas>
             </div>
 
@@ -47,11 +42,11 @@
                             ],
                             borderWidth: 1,
                             data: [
-                                {{ number_format($event->stronglyagree_percentage, 2) }},
-                                {{ number_format($event->agree_percentage, 2) }},
-                                {{ number_format($event->moderatelyagree_percentage, 2) }},
-                                {{ number_format($event->disagree_percentage, 2) }},
-                                {{ number_format($event->strongdisagree_percentage, 2) }}
+                                {{ $event->stronglyagree_percentage }},
+                                {{ $event->agree_percentage }},
+                                {{ $event->moderatelyagree_percentage }},
+                                {{ $event->disagree_percentage }},
+                                {{ $event->strongdisagree_percentage }}
                             ],
                         }]
                     };
@@ -85,4 +80,5 @@
     <div class="mt-6">
         {{ $eventRatings->links() }}
     </div>
+
 </div>

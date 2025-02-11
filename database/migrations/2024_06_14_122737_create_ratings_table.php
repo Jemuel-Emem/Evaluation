@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('disagree')->default(0);
             $table->integer('strongdisagree')->default(0);
             $table->string('status')->default('Pending');
+            $table->string('comments');
             $table->timestamps();
 
 

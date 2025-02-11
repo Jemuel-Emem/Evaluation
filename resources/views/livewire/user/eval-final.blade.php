@@ -16,10 +16,10 @@
             <div class="space-y-6">
                 @foreach($questions as $quest)
                     <div class="p-6">
-                        <!-- Question Title -->
+
                         <h3 class="text-lg font-medium text-gray-800 mb-4">{{ $quest->questtion }}</h3>
 
-                        <!-- Rating Options -->
+
                         <div class="flex items-center space-x-6">
                             <span class="text-sm font-semibold text-gray-600">Not Satisfied</span>
                             <div class="flex space-x-2">
@@ -34,9 +34,14 @@
                         </div>
                     </div>
                 @endforeach
+
+                <div class="p-6">
+                    <label for="comments" class="block text-lg font-medium text-gray-800 mb-4">Comments and Suggestion</label>
+                    <textarea id="comments" name="comments" wire:model="comments" rows="4" class="w-full p-2 border border-gray-300 rounded-md" placeholder="Enter your comments here..."></textarea>
+                </div>
             </div>
 
-            <!-- Pagination Links -->
+
             <div class="mt-6">
                 <div class="flex justify-center">
                     {{ $questions->links() }}

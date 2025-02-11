@@ -13,7 +13,7 @@ class EvalFinal extends Component
     use WithFileUploads, Actions, WithPagination;
     public $questionid, $eventname;
     public $ratings = [];
-
+    public $comments = '';
     public $hasEvaluated = false;
 
     public function mount($questionid = null)
@@ -83,6 +83,7 @@ class EvalFinal extends Component
             'disagree' => $disagreeCount,
             'strongdisagree' => $stronglyDisagreeCount,
             'status' => 'Completed',
+            'comments' => $this->comments,
         ]);
 
         $this->dialog()->success(

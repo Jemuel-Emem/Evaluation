@@ -92,10 +92,30 @@
                                                         </span>
                                                     </a>
                                                 </li>
+
+                                                <li>
+                                                    <a href="{{ route('manage-questions') }}" title="#" class="inline-flex items-center w-full p-2 pl-3 text-sm font-light text-gray-500 rounded-lg group hover:bg-green-700">
+                                                        <span class="inline-flex items-center w-full">
+                                                            <ion-icon class="size-4 md hydrated" name="document-outline" role="img" aria-label="document outline"></ion-icon>
+                                                            <span class="ml-4 text-white"> Add Survey Questionaires </span>
+                                                        </span>
+                                                    </a>
+                                                </li>
+
+                                                <li>
+                                                    <a href="{{ route('result') }}" title="#" class="inline-flex items-center w-full p-2 pl-3 text-sm font-light text-gray-500 rounded-lg group hover:bg-green-700">
+                                                        <span class="inline-flex items-center w-full">
+                                                            <ion-icon class="size-4 md hydrated" name="document-outline" role="img" aria-label="document outline"></ion-icon>
+                                                            <span class="ml-4 text-white">Comments & Suggestions</span>
+                                                        </span>
+                                                    </a>
+                                                </li>
                                             </ul>
                                         </div>
                                     </div>
                                 </li>
+
+
                             </ul>
                         </nav>
                     </div>

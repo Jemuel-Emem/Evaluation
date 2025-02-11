@@ -47,6 +47,10 @@ Route::middleware([
             return view('admin.ratings');
         })->name('ratings');
 
+        Route::get('/result', function(){
+            return view('admin.result');
+        })->name('result');
+
 
      });
 

@@ -16,6 +16,12 @@ class ratings extends Model
         'moderatelyagree',
         'disagree',
         'strongdisagree',
-        'status'
+        'status',
+        'comments'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
