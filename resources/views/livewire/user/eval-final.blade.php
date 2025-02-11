@@ -36,7 +36,7 @@
                 @endforeach
 
                 <div class="p-6">
-                    <label for="comments" class="block text-lg font-medium text-gray-800 mb-4">Comments and Suggestion</label>
+                    <label for="comments" class="block text-lg font-medium text-gray-800 mb-4">Comments and Suggestions</label>
                     <textarea id="comments" name="comments" wire:model="comments" rows="4" class="w-full p-2 border border-gray-300 rounded-md" placeholder="Enter your comments here..."></textarea>
                 </div>
             </div>
