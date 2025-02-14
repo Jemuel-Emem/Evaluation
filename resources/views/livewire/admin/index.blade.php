@@ -5,14 +5,15 @@
             <div class="bg-white shadow-md rounded-lg p-6 border border-gray-200">
                 <h3 class="text-xl font-semibold mb-4 text-gray-800">Event Name: {{ $event->eventname }}</h3>
 
-                <p class="text-gray-700"><strong>Total Users Evaluated:</strong> {{ $event->total_responses }}</p>
+                <p class="text-gray-700"><strong>Total Users Evaluated:</strong> {{ $event->total_respondents }}</p>
+
 
                 <div class="mt-4">
-                    <p class="text-green-600">Strongly Agree: <strong>{{ $event->stronglyagree }}</strong></p>
-                    <p class="text-blue-600">Agree: <strong>{{ $event->agree }}</strong></p>
-                    <p class="text-yellow-600">Moderately Agree: <strong>{{ $event->moderatelyagree }}</strong></p>
-                    <p class="text-red-600">Disagree: <strong>{{ $event->disagree }}</strong></p>
-                    <p class="text-purple-600">Strongly Disagree: <strong>{{ $event->strongdisagree }}</strong></p>
+                    <p class="text-green-600">5. Strongly Agree: <strong>{{ $event->stronglyagree }}</strong></p>
+                    <p class="text-blue-600">4. Agree: <strong>{{ $event->agree }}</strong></p>
+                    <p class="text-yellow-600">3. Moderately Agree: <strong>{{ $event->moderatelyagree }}</strong></p>
+                    <p class="text-red-600">2. Disagree: <strong>{{ $event->disagree }}</strong></p>
+                    <p class="text-purple-600">1. Strongly Disagree: <strong>{{ $event->strongdisagree }}</strong></p>
                 </div>
 
                 <canvas id="chart{{ $index }}" class="w-full h-56"></canvas>

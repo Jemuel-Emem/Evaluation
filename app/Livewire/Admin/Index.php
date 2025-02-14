@@ -68,18 +68,34 @@ class Index extends Component
     $eventsList = Rate::select('eventname')->groupBy('eventname')->get();
 
     // Filter event ratings based on the selected event
+    // $eventRatings = Rate::when($this->selectedEvent, function ($query) {
+    //         $query->where('eventname', $this->selectedEvent);
+    //     })
+    //     ->where('eventname', 'like', $search)
+    //     ->select('eventname',
+    //         DB::raw('SUM(stronglyagree) as stronglyagree'),
+    //         DB::raw('SUM(agree) as agree'),
+    //         DB::raw('SUM(moderatelyagree) as moderatelyagree'),
+    //         DB::raw('SUM(disagree) as disagree'),
+    //         DB::raw('SUM(strongdisagree) as strongdisagree'))
+    //     ->groupBy('eventname')
+    //     ->paginate(1); // Paginate by 1 item per page
+
     $eventRatings = Rate::when($this->selectedEvent, function ($query) {
-            $query->where('eventname', $this->selectedEvent);
-        })
-        ->where('eventname', 'like', $search)
-        ->select('eventname',
-            DB::raw('SUM(stronglyagree) as stronglyagree'),
-            DB::raw('SUM(agree) as agree'),
-            DB::raw('SUM(moderatelyagree) as moderatelyagree'),
-            DB::raw('SUM(disagree) as disagree'),
-            DB::raw('SUM(strongdisagree) as strongdisagree'))
-        ->groupBy('eventname')
-        ->paginate(1); // Paginate by 1 item per page
+        $query->where('eventname', $this->selectedEvent);
+    })
+    ->where('eventname', 'like', $search)
+    ->select('eventname',
+        DB::raw('COUNT(DISTINCT user_id) as total_respondents'), // Count unique users
+        DB::raw('SUM(stronglyagree) as stronglyagree'),
+        DB::raw('SUM(agree) as agree'),
+        DB::raw('SUM(moderatelyagree) as moderatelyagree'),
+        DB::raw('SUM(disagree) as disagree'),
+        DB::raw('SUM(strongdisagree) as strongdisagree'))
+    ->groupBy('eventname')
+    ->paginate(1);
+
+
 
     // Calculate total evaluations & percentages
     $eventRatings->each(function ($rating) {
