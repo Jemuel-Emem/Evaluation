@@ -2,54 +2,37 @@
 
 namespace App\Livewire\User;
 
-use App\Models\Question;
-use App\Models\Event;
-use Livewire\WithFileUploads;
+use App\Models\Evaluation;
 use Livewire\WithPagination;
 use WireUi\Traits\Actions;
-use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
 class EvaluateForm extends Component
 {
-    use WithFileUploads, Actions, WithPagination;
+    use WithPagination, Actions;
 
     public $search;
-    public $currentStep = 1;
-    public $selectedEvent;
-    public $questions;
-    public $events;
-    public $questionid;
-    public $selectedQuestionId;
 
     public function render()
     {
-
         $search = '%' . $this->search . '%';
 
-        $questions = Question::whereIn('id', function ($query) use ($search) {
-            $query->selectRaw('MIN(id)')
-                ->from('questions')
-                ->where('eventname', 'like', $search)
-                ->groupBy('eventname');
-        })
-        ->paginate(10);
+        // Ensure we always get a collection, even if empty
+        $evaluations = Evaluation::whereHas('event', function ($query) use ($search) {
+                $query->where('eventname', 'like', $search);
+            })
+            ->paginate(10) ?? collect(); // Ensure it returns a collection
 
         return view('livewire.user.evaluate-form', [
-            'question' => $questions,
+            'evaluations' => $evaluations,
         ]);
-
-
     }
 
-    public function evaluate($questionId)
-{
-    Session::put('selectedQuestionId', $questionId);
-    return redirect()->route('eval-final');
-
-
-}
-
+    public function evaluate($evaluationId)
+    {
+ dd($evaluationId);
+        return redirect()->route('eval-final', ['evaluation_id' => $evaluationId]);
+    }
 
 
 }

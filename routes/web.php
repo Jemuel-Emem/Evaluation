@@ -1,6 +1,8 @@
 <?php
+
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EvaluationController;
+use App\Livewire\User\EvalFinal;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -51,6 +53,30 @@ Route::middleware([
             return view('admin.result');
         })->name('result');
 
+        Route::get('/survey_questions', function(){
+            return view('admin.survey_questions');
+        })->name('survey_questions');
+
+        Route::get('/act', function(){
+            return view('admin.act');
+        })->name('act');
+
+        Route::get('/venue', function(){
+            return view('admin.venue');
+        })->name('venue');
+
+        Route::get('/accomodations', function(){
+            return view('admin.accomodations');
+        })->name('accomodations');
+
+        Route::get('/speaker', function(){
+            return view('admin.speaker');
+        })->name('speaker');
+
+        Route::get('/evaluation', function(){
+            return view('admin.evaluation');
+        })->name('evaluation');
+
 
      });
 
@@ -79,6 +105,7 @@ Route::middleware([
 // Route::view('dashboard', 'dashboard')
 //     ->middleware(['auth', 'verified'])
 //     ->name('dashboard');
+// Route::get('/eval-final/{evaluation_id}', EvalFinal::class)->name('eval-final');
 
 Route::view('profile', 'profile')
     ->middleware(['auth'])

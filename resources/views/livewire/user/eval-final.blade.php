@@ -15,37 +15,38 @@
         <form wire:submit.prevent="submitEvaluation" class="bg-white">
             <div class="space-y-6">
                 @foreach($questions as $quest)
-                    <div class="p-6">
+    <div class="p-6">
+        <!-- Question Title -->
+        <h3 class="text-lg font-medium text-gray-800 mb-4">{{ $quest->text ?? $quest->question_text }}</h3>
 
-                        <h3 class="text-lg font-medium text-gray-800 mb-4">{{ $quest->questtion }}</h3>
-
-
-                        <div class="flex items-center space-x-6">
-                            <span class="text-sm font-semibold text-gray-600">Not Satisfied</span>
-                            <div class="flex space-x-2">
-                                @foreach(range(1, 5) as $rating)
-                                    <label class="inline-flex items-center">
-                                        <input type="radio" class="form-radio text-blue-600" name="rating_{{ $quest->id }}" wire:model="ratings.{{ $quest->id }}" value="{{ $rating }}" required>
-                                        <span class="ml-2">{{ $rating }}</span>
-                                    </label>
-                                @endforeach
-                            </div>
-                            <span class="text-sm font-semibold text-gray-600">Very Satisfied</span>
-                        </div>
-                    </div>
+        <!-- Rating Options (Checkboxes) -->
+        <div class="flex items-center space-x-6">
+            <span class="text-sm font-semibold text-gray-600">Not Satisfied</span>
+            <div class="flex space-x-2">
+                @foreach(range(1, 5) as $rating)
+                    <label class="inline-flex items-center">
+                        <input type="checkbox" class="form-checkbox text-blue-600"
+                               wire:model="ratings.{{ $quest->id }}"
+                               value="{{ $rating }}"
+                               wire:click="selectOnlyOne('{{ $quest->id }}', '{{ $rating }}')">
+                        <span class="ml-2">{{ $rating }}</span>
+                    </label>
                 @endforeach
+            </div>
+            <span class="text-sm font-semibold text-gray-600">Very Satisfied</span>
+        </div>
+    </div>
+@endforeach
 
-                <div class="p-6">
-                    <label for="comments" class="block text-lg font-medium text-gray-800 mb-4">Comments and Suggestions</label>
-                    <textarea id="comments" name="comments" wire:model="comments" rows="4" class="w-full p-2 border border-gray-300 rounded-md" placeholder="Enter your comments here..."></textarea>
-                </div>
+
+
             </div>
 
-
+            <!-- Pagination Links -->
             <div class="mt-6">
-                <div class="flex justify-center">
+                {{-- <div class="flex justify-center">
                     {{ $questions->links() }}
-                </div>
+                </div> --}}
             </div>
 
             <!-- Submit Button -->
