@@ -55,12 +55,9 @@
                 <a class="hover:text-green-500 focus:outline-none text-white md:ml-auto" href="{{ route('userdashboard') }}">Home
                 </a>
                 <a class="inline-flex items-center justify-center w-full h-8 gap-3 px-5 py-3 text-xs font-medium text-white duration-200 rounded-lg md:w-auto" href="#_" role="button">
-                    <x-dropdown>
-                        <x-slot name="trigger">
-                            <x-avatar sm src="https://picsum.photos/300?size=sm" />
-                        </x-slot>
-                        <x-dropdown.item separator label="Logout" href="{{ route('logout') }}" />
-                    </x-dropdown>
+                    <span>
+                     <a href="{{route('logout')}}" class="bg-green-900 text-white p-1 rounded-lg w-32 text-center hover:bg-red-500">Logout</a>
+                    </span>
                 </a>
             </nav>
         </div>
