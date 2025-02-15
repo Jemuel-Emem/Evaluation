@@ -1,5 +1,5 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-white">
-    @if($hasEvaluated)
+    {{-- @if ($hasEvaluated)
         <div class="bg-green-100 p-6 rounded-md shadow-md mb-6">
             <h2 class="text-2xl font-bold text-green-700">Thank you for your feedback!</h2>
             <p class="text-lg text-gray-700">You have already submitted your evaluation for this event.</p>
@@ -14,16 +14,14 @@
         <!-- Survey Form Section -->
         <form wire:submit.prevent="submitEvaluation" class="bg-white">
             <div class="space-y-6">
-                @foreach($questions as $quest)
+@foreach ($questions as $quest)
     <div class="p-6">
-        <!-- Question Title -->
         <h3 class="text-lg font-medium text-gray-800 mb-4">{{ $quest->text ?? $quest->question_text }}</h3>
 
-        <!-- Rating Options (Checkboxes) -->
         <div class="flex items-center space-x-6">
             <span class="text-sm font-semibold text-gray-600">Not Satisfied</span>
             <div class="flex space-x-2">
-                @foreach(range(1, 5) as $rating)
+                @foreach (range(1, 5) as $rating)
                     <label class="inline-flex items-center">
                         <input type="checkbox" class="form-checkbox text-blue-600"
                                wire:model="ratings.{{ $quest->id }}"
@@ -42,19 +40,35 @@
 
             </div>
 
-            <!-- Pagination Links -->
             <div class="mt-6">
-                {{-- <div class="flex justify-center">
-                    {{ $questions->links() }}
-                </div> --}}
+                
             </div>
 
-            <!-- Submit Button -->
             <div class="mt-6 flex justify-center">
                 <button type="submit" class="px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-200">
                     Submit Evaluation
                 </button>
             </div>
         </form>
-    @endif
+    @endif --}}
+    <h1>{{ $eventname }}</h1>
+    <div class="mt-10">
+        <div class="space-y-5">
+            @foreach ($categories as $item)
+                <div class="border-b mb-10">
+                    <h1>{{ $item->category->name }}</h1>
+                    <ul class="mt-5">
+                        @php
+                            $i = 1;
+                        @endphp
+                        @foreach ($item->category->categoryQuestions as $question)
+                            <li>
+                                <p>{{ $i++ }}. {{ $question->question }}</p>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endforeach
+        </div>
+    </div>
 </div>

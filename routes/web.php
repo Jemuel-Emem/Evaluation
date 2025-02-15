@@ -1,8 +1,6 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\EvaluationController;
-use App\Livewire\User\EvalFinal;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,91 +14,87 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 Route::middleware([
 
-    ])->group(function () {
-         Route::get('/dashboard', function () {
-           if (auth()->user()->is_admin == 1) {
+])->group(function () {
+    Route::get('/dashboard', function () {
+        if (auth()->user()->is_admin == 1) {
             return redirect()->route('admin-dashboard');
-           }
-           else{
+        } else {
             return redirect()->route('user-dashboard');
-           }
-         })->name('userdashboard');
+        }
+    })->name('userdashboard');
 
-    });
+});
 
-    Route::prefix('admin')->middleware('admin')->group(function(){
+Route::prefix('admin')->middleware('admin')->group(function () {
 
-        Route::get('/admin', function(){
-            return view('admin.index');
-        })->name('admin-dashboard');
+    Route::get('/admin', function () {
+        return view('admin.index');
+    })->name('admin-dashboard');
 
-        Route::get('/manage-events', function(){
-            return view('admin.manage-events');
-        })->name('manage-events');
+    Route::get('/manage-events', function () {
+        return view('admin.manage-events');
+    })->name('manage-events');
 
-        Route::get('/manage-questions', function(){
-            return view('admin.manage-questions');
-        })->name('manage-questions');
+    Route::get('/manage-questions', function () {
+        return view('admin.manage-questions');
+    })->name('manage-questions');
 
-        Route::get('/ratings', function(){
-            return view('admin.ratings');
-        })->name('ratings');
+    Route::get('/ratings', function () {
+        return view('admin.ratings');
+    })->name('ratings');
 
-        Route::get('/result', function(){
-            return view('admin.result');
-        })->name('result');
+    Route::get('/result', function () {
+        return view('admin.result');
+    })->name('result');
 
-        Route::get('/survey_questions', function(){
-            return view('admin.survey_questions');
-        })->name('survey_questions');
+    Route::get('/survey_questions', function () {
+        return view('admin.survey_questions');
+    })->name('survey_questions');
 
-        Route::get('/act', function(){
-            return view('admin.act');
-        })->name('act');
+    Route::get('/category/questions/{id}', function () {
+        return view('admin.act');
+    })->name('act');
 
-        Route::get('/venue', function(){
-            return view('admin.venue');
-        })->name('venue');
+    Route::get('/venue', function () {
+        return view('admin.venue');
+    })->name('venue');
 
-        Route::get('/accomodations', function(){
-            return view('admin.accomodations');
-        })->name('accomodations');
+    Route::get('/accomodations', function () {
+        return view('admin.accomodations');
+    })->name('accomodations');
 
-        Route::get('/speaker', function(){
-            return view('admin.speaker');
-        })->name('speaker');
+    Route::get('/speaker', function () {
+        return view('admin.speaker');
+    })->name('speaker');
 
-        Route::get('/evaluation', function(){
-            return view('admin.evaluation');
-        })->name('evaluation');
+    Route::get('/evaluation', function () {
+        return view('admin.evaluation');
+    })->name('evaluation');
 
+});
 
-     });
+Route::prefix('user')->middleware('user')->group(function () {
 
-     Route::prefix('user')->middleware('user')->group(function(){
+    Route::get('/user', function () {
+        return view('user.index');
+    })->name('user-dashboard');
 
-        Route::get('/user', function(){
-            return view('user.index');
-        })->name('user-dashboard');
+    Route::get('/evaluate-from', function () {
+        return view('user.evaluate-form');
+    })->name('evaluate-form');
+    Route::get('/eval-final/{evaluation_id}', function () {
+        return view('user.eval-final');
+    })->name('eval-final');
 
-        Route::get('/evaluate-from', function(){
-            return view('user.evaluate-form');
-        })->name('evaluate-form');
-        Route::get('/eval-final', function () {
-            return view('user.eval-final');
-        })->name('eval-final');
+    Route::get('/about', function () {
+        return view('user.about');
+    })->name('about');
 
-        Route::get('/about', function () {
-            return view('user.about');
-        })->name('about');
+});
 
-
-     });
-
-     Route::view('/', 'welcome');
+Route::view('/', 'welcome');
 
 // Route::view('dashboard', 'dashboard')
 //     ->middleware(['auth', 'verified'])
@@ -111,4 +105,4 @@ Route::view('profile', 'profile')
     ->middleware(['auth'])
     ->name('profile');
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

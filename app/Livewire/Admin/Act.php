@@ -1,18 +1,23 @@
 <?php
-
 namespace App\Livewire\Admin;
-use Livewire\WithPagination;
-use App\Models\Program_Activity_Question as ProgramActivityQuestion;
+
+use App\Models\Category;
+use App\Models\CategoryQuestion;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Act extends Component
 {
     use WithPagination;
 
     public $question_text;
-    public $edit_id = null;
-    public $add_modal = false;
+
+    public $cat_name;
+    public $edit_id    = null;
+    public $add_modal  = false;
     public $edit_modal = false;
+
+    public $category_id;
 
     protected $rules = [
         'question_text' => 'required|string|min:5|max:255',
@@ -22,8 +27,9 @@ class Act extends Component
     {
         $this->validate();
 
-        ProgramActivityQuestion::create([
-            'text' => $this->question_text,
+        CategoryQuestion::create([
+            'category_id' => $this->category_id,
+            'question'    => $this->question_text,
         ]);
 
         $this->reset(['question_text', 'add_modal']);
@@ -32,10 +38,10 @@ class Act extends Component
 
     public function edit($id)
     {
-        $question = ProgramActivityQuestion::findOrFail($id);
-        $this->edit_id = $id;
-        $this->question_text = $question->text;
-        $this->edit_modal = true;
+        $question            = CategoryQuestion::findOrFail($id);
+        $this->edit_id       = $id;
+        $this->question_text = $question->question;
+        $this->edit_modal    = true;
     }
 
     public function updatequestion()
@@ -43,8 +49,8 @@ class Act extends Component
         $this->validate();
 
         if ($this->edit_id) {
-            ProgramActivityQuestion::where('id', $this->edit_id)
-                ->update(['text' => $this->question_text]);
+            CategoryQuestion::where('id', $this->edit_id)
+                ->update(['question' => $this->question_text]);
         }
 
         $this->reset(['question_text', 'edit_id', 'edit_modal']);
@@ -53,14 +59,21 @@ class Act extends Component
 
     public function delete($id)
     {
-        ProgramActivityQuestion::findOrFail($id)->delete();
+        CategoryQuestion::findOrFail($id)->delete();
         session()->flash('message', 'Question deleted successfully.');
+    }
+
+    public function mount()
+    {
+        $this->category_id = request('id');
+
+        $this->cat_name = Category::where('id', $this->category_id)->first()->name;
     }
     public function render()
     {
 
         return view('livewire.admin.act', [
-            'questions' => ProgramActivityQuestion::paginate(5),
+            'questions' => CategoryQuestion::where('category_id', $this->category_id)->paginate(5),
         ]);
     }
 }

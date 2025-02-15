@@ -3,7 +3,8 @@
     {{-- Success Message Alert --}}
     {{-- <x-alert class="bg-green-700 text-green-100 p-4" /> --}}
 
-    <div class="flex justify-end">
+    <div class="flex justify-between">
+        <h1 class="font-bold uppercase">{{ $cat_name }}</h1>
         <x-button label="Add Question" teal icon="plus" wire:click="$set('add_modal', true)" />
     </div>
 
@@ -19,7 +20,7 @@
             <tbody>
                 @forelse($questions as $question)
                     <tr>
-                        <td class="px-6 py-4">{{ $question->text }}</td>
+                        <td class="px-6 py-4">{{ $question->question }}</td>
                         <td class="px-6 py-4 flex gap-2 justify-center">
                             <x-button class="w-16 h-6" label="Edit" icon="pencil-alt"
                                 wire:click="edit({{ $question->id }})" positive />
@@ -29,7 +30,8 @@
                                     icon: 'warning',
                                     method: 'delete',
                                     params: {{ $question->id }}
-                                }" negative />
+                                }"
+                                negative />
                         </td>
                     </tr>
                 @empty
