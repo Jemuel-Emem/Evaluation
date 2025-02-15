@@ -29,7 +29,7 @@
 
 </head>
 
-<body class="font-sans antialiased md:h-screen bg-no-repeat bg-cover bg-center" style="background-image: url('{{ asset('images/bg_sksu.jpg') }}');">
+<body class="font-sans antialiased  bg-no-repeat bg-cover bg-center" style="background-image: url('{{ asset('images/bg_sksu.jpg') }}');">
     @livewireScripts
     <x-dialog />
 

@@ -21,15 +21,22 @@ class EvalFinal extends Component
 
     public function mount()
     {
-        // $this->evaluation_id = $evaluation_id ?? request()->query('evaluation_id');
-        // $evaluation = Evaluation::where('id', $this->evaluation_id)->first();
-
-        // if ($evaluation) {
-        //     $this->eventname = $evaluation->event->eventname;
-        // }
-
         $this->evaluation_id = request('evaluation_id');
-        $this->eventname     = event::where('id', $this->evaluation_id)->first()->eventname;
+        $event = event::where('id', $this->evaluation_id)->first();
+
+        if ($event) {
+            $this->eventname = $event->eventname;
+        }
+
+        // Check if the user has already submitted an evaluation
+        $existingEvaluation = Ratings::where('user_id', auth()->id())
+            ->where('eventname', $this->eventname)
+            ->where('status', 'Completed')
+            ->first();
+
+        if ($existingEvaluation) {
+            $this->hasEvaluated = true; // Disable submission if already evaluated
+        }
     }
 
     public function render()
@@ -62,59 +69,61 @@ class EvalFinal extends Component
     }
 
     public function submitEvaluation()
-    {
-        if ($this->hasEvaluated) {
-            $this->dialog()->error(
-                'Already Evaluated!',
-                'You have already submitted an evaluation for this event.'
-            );
-            return;
-        }
-
-        $meanRatings = $this->calculateMeanRatings();
-
-        Ratings::create([
-            'user_id'         => auth()->id(),
-            'eventname'       => $this->eventname,
-            'stronglyagree'   => $meanRatings['Strongly Agree'] ?? 0,
-            'agree'           => $meanRatings['Agree'] ?? 0,
-            'moderatelyagree' => $meanRatings['Moderately Agree'] ?? 0,
-            'disagree'        => $meanRatings['Disagree'] ?? 0,
-            'strongdisagree'  => $meanRatings['Strongly Disagree'] ?? 0,
-            'status'          => 'Completed',
-            'comments'        => $this->comments,
-        ]);
-
-        $this->dialog()->success(
-            'Evaluation Saved!',
-            'Your evaluation has been successfully submitted. Thank you for your feedback!'
+{
+    if ($this->hasEvaluated) {
+        $this->dialog()->error(
+            'Already Evaluated!',
+            'You have already submitted an evaluation for this event.'
         );
-
-        $this->hasEvaluated = true;
+        return;
     }
 
-    public function calculateMeanRatings()
-    {
-        $meanRatings = [
-            'Strongly Agree'    => 0,
-            'Agree'             => 0,
-            'Moderately Agree'  => 0,
-            'Disagree'          => 0,
-            'Strongly Disagree' => 0,
-        ];
+    $meanRatings = $this->calculateMeanRatings();
 
-        foreach ($this->ratings as $rating) {
-            $category = $this->getCategory($rating);
-            $meanRatings[$category]++;
-        }
+    Ratings::create([
+        'user_id'         => auth()->id(),
+        'eventname'       => $this->eventname,
+        'stronglyagree'   => $meanRatings['Strongly Agree'] ?? 0,
+        'agree'           => $meanRatings['Agree'] ?? 0,
+        'moderatelyagree' => $meanRatings['Moderately Agree'] ?? 0,
+        'disagree'        => $meanRatings['Disagree'] ?? 0,
+        'strongdisagree'  => $meanRatings['Strongly Disagree'] ?? 0,
+        'status'          => 'Completed',
+        'comments'        => $this->comments,
+    ]);
 
-        return $meanRatings;
+    $this->dialog()->success(
+        'Evaluation Saved!',
+        'Your evaluation has been successfully submitted. Thank you for your feedback!'
+    );
+
+    $this->hasEvaluated = true;
+}
+
+public function calculateMeanRatings()
+{
+    $meanRatings = [
+        'Strongly Agree'    => 0,
+        'Agree'             => 0,
+        'Moderately Agree'  => 0,
+        'Disagree'          => 0,
+        'Strongly Disagree' => 0,
+    ];
+
+    foreach ($this->ratings as $rating) {
+        if (!is_numeric($rating)) continue;
+        $category = $this->getCategory((float) $rating);
+        $meanRatings[$category]++;
     }
+
+    return $meanRatings;
+}
+
     public function selectOnlyOne($questionId, $selectedRating)
     {
-
-        $this->ratings[$questionId] = [$selectedRating];
+        $this->ratings[$questionId] = $selectedRating;
     }
+
     public function getCategory($mean)
     {
         if ($mean >= 4.20) {
