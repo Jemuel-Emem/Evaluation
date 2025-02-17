@@ -26,6 +26,10 @@ class evaluation extends Model
     {
         return $this->belongsTo(Program_Activity_Question::class, 'program_activities_id');
     }
+    public function programActivities()
+    {
+        return $this->belongsToMany(Program_Activity_Question::class, 'evaluation_program_activity');
+    }
 
     public function venue()
     {

@@ -9,7 +9,10 @@ class Category extends Model
     use HasFactory;
 
     protected $guarded = [];
-
+    public function ratings()
+    {
+        return $this->hasMany(Ratings::class);
+    }
     public function evaluationForms()
     {
         return $this->hasMany(EvaluationForm::class);

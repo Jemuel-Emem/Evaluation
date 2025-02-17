@@ -19,4 +19,13 @@ class EvaluationForm extends Model
     {
         return $this->belongsTo(event::class);
     }
+
+
+
+    public function programActivityQuestions()
+    {
+        return $this->belongsToMany(Program_Activity_Question::class);
+    }
+
+
 }

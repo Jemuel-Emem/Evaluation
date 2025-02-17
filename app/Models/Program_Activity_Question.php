@@ -9,4 +9,11 @@ class Program_Activity_Question extends Model
 {
     use HasFactory;
     protected $fillable = ['text'];
+
+    public function evaluationForms()
+    {
+        return $this->hasMany(EvaluationForm::class);
+    }
+
+
 }

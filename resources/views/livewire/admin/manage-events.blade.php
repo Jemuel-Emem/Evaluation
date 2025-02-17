@@ -27,7 +27,8 @@
                        <td class="px-6 py-4">{{ $q->eventname }}</td>
 
                       <td class="px-6 py-4 flex gap-2 mt-4 justify-center">
-                           <x-button class="w-16 h-6" label="edit" icon="pencil-alt" wire:click="edit({{ $q->id }})" positive />
+                        <x-button class="w-16 h-6" label="edit" icon="pencil-alt" wire:click="edit({{ $q->id }})" positive />
+
                                <x-button class="w-16 h-6" label="delete" icon="pencil-alt"
                                x-on:confirm="{
                                    title: 'Sure Delete?',
@@ -51,7 +52,7 @@
        </div>
 
        <x-modal wire:model.defer="add_modal">
-           <x-card title="Add Agent">
+           <x-card title="Add Event">
                <div class="space-y-3">
 
                    <x-input label="Event Name" placeholder="" wire:model="eventname" />

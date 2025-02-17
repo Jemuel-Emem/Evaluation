@@ -50,9 +50,9 @@
                                 <span>{{ implode(', ', $categoryNames->toArray()) }}</span>
                             </td>
                             <td class="px-6 py-4 flex justify-center gap-2">
-                                <x-button label="Edit" icon="pencil" wire:click="edit({{ $evaluation->id }})"
+                                <x-button label="Edit" icon="pencil" wire:click="edit({{ $evaluation->event_id }})"
                                     positive />
-                                <x-button label="Delete" icon="trash" wire:click="delete({{ $evaluation->id }})"
+                                <x-button label="Delete" icon="trash" wire:click="delete({{ $evaluation->event_id }})"
                                     negative />
                             </td>
                         </tr>

@@ -35,7 +35,7 @@ class Evaluation extends Component
 
     public function store()
     {
-        dd('sdsdsd');
+
         $this->validate(['event_id' => 'required|exists:events,id']);
 
         evals::create([
@@ -52,17 +52,18 @@ class Evaluation extends Component
 
     public function edit($id)
     {
-        $evaluation              = evals::findOrFail($id);
+        $evaluation = evals::findOrFail($id);
         $this->evaluation_id     = $evaluation->id;
         $this->event_id          = $evaluation->event_id;
         $this->selectedQuestions = [
-            'program_activity' => $evaluation->program_activities_id,
-            'venue'            => $evaluation->venue_id,
-            'accommodation'    => $evaluation->accommodations_id,
-            'speaker'          => $evaluation->speaker_id,
+            'program_activity' => $evaluation->program_activities_id ?? null,
+            'venue'            => $evaluation->venue_id ?? null,
+            'accommodation'    => $evaluation->accommodations_id ?? null,
+            'speaker'          => $evaluation->speaker_id ?? null,
         ];
         $this->edit_modal = true;
     }
+
 
     public function update()
     {
