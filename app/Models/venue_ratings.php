@@ -5,10 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class program_activity_ratings extends Model
+class venue_ratings extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'event_id',
         'eventname',
@@ -18,5 +17,4 @@ class program_activity_ratings extends Model
         'disagree',
         'stronglydisagree',
     ];
-
 }
