@@ -4,6 +4,20 @@
         <h3 class="text-xl font-semibold mb-4 text-gray-800">Event Name: {{ $event->eventname }}</h3>
 
         <p class="text-gray-700"><strong>Total Users Evaluated:</strong> {{ $event->total_respondents }}</p>
+        <div class="mt-4 bg-gray-100 p-4 rounded-lg">
+            <h4 class="text-lg font-semibold">Overall Satisfaction</h4>
+            @php
+                $totalResponses = $event->stronglyagree + $event->agree + $event->moderatelyagree + $event->disagree + $event->stronglydisagree;
+                $satisfied = $event->stronglyagree + $event->agree;
+                $notSatisfied = $event->moderatelyagree + $event->disagree + $event->stronglydisagree;
+
+                $satisfiedPercentage = $totalResponses > 0 ? ($satisfied / $totalResponses) * 100 : 0;
+                $notSatisfiedPercentage = $totalResponses > 0 ? ($notSatisfied / $totalResponses) * 100 : 0;
+            @endphp
+
+            <p class="text-green-600">✅ Satisfied: <strong>{{ number_format($satisfiedPercentage, 2) }}%</strong></p>
+            <p class="text-red-600">❌ Not Satisfied: <strong>{{ number_format($notSatisfiedPercentage, 2) }}%</strong></p>
+        </div>
 
         <!-- Event Ratings -->
 <div class="flex gap-4">
@@ -74,14 +88,14 @@
             var disagreePercent = totalEventResponses > 0 ? ({{ $event->disagree }} / totalEventResponses) * 100 : 0;
             var stronglyDisagreePercent = totalEventResponses > 0 ? ({{ $event->stronglydisagree }} / totalEventResponses) * 100 : 0;
 
-            // Get the context for the pie chart
+            // Get the context for the bar chart
             var ctx{{ $loop->index }} = document.getElementById('chart{{ $loop->index }}').getContext('2d');
 
             // Prepare the data for the chart
             var data{{ $loop->index }} = {
                 labels: ['Strongly Agree', 'Agree', 'Moderately Agree', 'Disagree', 'Strongly Disagree'],
                 datasets: [{
-                    label: '{{ $event->eventname }} Ratings',
+                    label: '{{ $event->eventname }} Ratings (%)',
                     backgroundColor: [
                         'rgba(75, 192, 192, 0.6)', // Strongly Agree
                         'rgba(54, 162, 235, 0.6)', // Agree
@@ -90,11 +104,11 @@
                         'rgba(153, 102, 255, 0.6)' // Strongly Disagree
                     ],
                     borderColor: [
-                        'rgba(75, 192, 192, 1)', // Strongly Agree
-                        'rgba(54, 162, 235, 1)', // Agree
-                        'rgba(255, 206, 86, 1)', // Moderately Agree
-                        'rgba(255, 99, 132, 1)', // Disagree
-                        'rgba(153, 102, 255, 1)' // Strongly Disagree
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(153, 102, 255, 1)'
                     ],
                     borderWidth: 1,
                     data: [
@@ -110,6 +124,16 @@
             // Configure the chart options
             var options{{ $loop->index }} = {
                 responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100, // Since it's percentage-based
+                        title: {
+                            display: true,
+                            text: 'Percentage (%)'
+                        }
+                    }
+                },
                 plugins: {
                     legend: { position: 'top' },
                     tooltip: {
@@ -122,14 +146,15 @@
                 }
             };
 
-            // Create the pie chart
-            var myPieChart{{ $loop->index }} = new Chart(ctx{{ $loop->index }}, {
-                type: 'pie',
+            // Create the bar chart
+            var myBarChart{{ $loop->index }} = new Chart(ctx{{ $loop->index }}, {
+                type: 'bar', // Changed from 'pie' to 'bar'
                 data: data{{ $loop->index }},
                 options: options{{ $loop->index }}
             });
         });
     </script>
+
 
 @endforeach
 
