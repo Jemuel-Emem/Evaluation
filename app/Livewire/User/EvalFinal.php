@@ -136,6 +136,7 @@ class EvalFinal extends Component
 
         Ratings::create([
             'user_id'         => auth()->id(),
+            'event_id'        => $this->evaluation_id,
             'eventname'       => $this->eventname,
             'stronglyagree'   => $meanRatings['Strongly Agree'] ?? 0,
             'agree'           => $meanRatings['Agree'] ?? 0,

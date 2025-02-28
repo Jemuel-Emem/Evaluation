@@ -10,6 +10,7 @@ class ratings extends Model
     use HasFactory;
     protected $fillable = [
         'user_id',
+        'event_id',
         'eventname',
         'stronglyagree',
         'agree',

@@ -20,130 +20,6 @@ class Index extends Component
         $this->render();
     }
 
-    // public function render()
-    // {
-    //     $search = '%' . $this->search . '%';
-
-    //     // Get all events for dropdown
-    //     $eventsList = Rate::select('eventname')->groupBy('eventname')->get();
-
-    //     // Fetch event ratings
-    //     $eventRatings = Rate::when($this->selectedEvent, function ($query) {
-    //         $query->where('eventname', $this->selectedEvent);
-    //     })
-    //     ->where('eventname', 'like', $search)
-    //     ->select('eventname',
-    //         DB::raw('COUNT(DISTINCT user_id) as total_respondents'), // Count unique users
-    //         DB::raw('SUM(stronglyagree) as stronglyagree'),
-    //         DB::raw('SUM(agree) as agree'),
-    //         DB::raw('SUM(moderatelyagree) as moderatelyagree'),
-    //         DB::raw('SUM(disagree) as disagree'),
-    //         DB::raw('SUM(strongdisagree) as stronglydisagree'))
-    //     ->groupBy('eventname')
-    //     ->paginate(1);
-
-    //     // Fetch program activity ratings
-    //     $programActivityRatings = Rate::when($this->selectedEvent, function ($query) {
-    //         $query->where('eventname', $this->selectedEvent);
-    //     })
-    //     ->where('eventname', 'like', $search)
-    //     ->select('eventname',
-    //         DB::raw('SUM(stronglyagree) as program_stronglyagree'),
-    //         DB::raw('SUM(agree) as program_agree'),
-    //         DB::raw('SUM(moderatelyagree) as program_moderatelyagree'),
-    //         DB::raw('SUM(disagree) as program_disagree'),
-    //         DB::raw('SUM(strongdisagree) as program_stronglydisagree'))
-    //     ->groupBy('eventname')
-    //     ->get();
-
-    //     // Calculate total evaluations & percentages for event ratings
-    //     $eventRatings->each(function ($rating) {
-    //         $totalResponses = $rating->stronglyagree + $rating->agree + $rating->moderatelyagree + $rating->disagree + $rating->stronglydisagree;
-    //         $rating->total_responses = $totalResponses;
-
-    //         $rating->stronglyagree_percentage = $totalResponses > 0 ? ($rating->stronglyagree / $totalResponses) * 100 : 0;
-    //         $rating->agree_percentage = $totalResponses > 0 ? ($rating->agree / $totalResponses) * 100 : 0;
-    //         $rating->moderatelyagree_percentage = $totalResponses > 0 ? ($rating->moderatelyagree / $totalResponses) * 100 : 0;
-    //         $rating->disagree_percentage = $totalResponses > 0 ? ($rating->disagree / $totalResponses) * 100 : 0;
-    //         $rating->strongdisagree_percentage = $totalResponses > 0 ? ($rating->stronglydisagree / $totalResponses) * 100 : 0;
-    //     });
-
-    //     // Calculate total evaluations & percentages for program activity ratings
-    //     $programActivityRatings->each(function ($rating) {
-    //         $totalProgramResponses = $rating->program_stronglyagree + $rating->program_agree + $rating->program_moderatelyagree + $rating->program_disagree + $rating->program_stronglydisagree;
-    //         $rating->program_total_responses = $totalProgramResponses;
-
-    //         $rating->program_stronglyagree_percentage = $totalProgramResponses > 0 ? ($rating->program_stronglyagree / $totalProgramResponses) * 100 : 0;
-    //         $rating->program_agree_percentage = $totalProgramResponses > 0 ? ($rating->program_agree / $totalProgramResponses) * 100 : 0;
-    //         $rating->program_moderatelyagree_percentage = $totalProgramResponses > 0 ? ($rating->program_moderatelyagree / $totalProgramResponses) * 100 : 0;
-    //         $rating->program_disagree_percentage = $totalProgramResponses > 0 ? ($rating->program_disagree / $totalProgramResponses) * 100 : 0;
-    //         $rating->program_stronglydisagree_percentage = $totalProgramResponses > 0 ? ($rating->program_stronglydisagree / $totalProgramResponses) * 100 : 0;
-    //     });
-
-    //     return view('livewire.admin.index', [
-    //         'eventRatings' => $eventRatings,
-    //         'programActivityRatings' => $programActivityRatings,
-    //         'eventsList' => $eventsList,
-    //     ]);
-    // }
-    // public function render()
-    // {
-    //     $search = '%' . $this->search . '%';
-
-    //     // Get all events for dropdown
-    //     $eventsList = Rate::select('eventname')->groupBy('eventname')->get();
-
-    //     // Fetch event ratings for the selected event
-    //     $eventRatings = Rate::when($this->selectedEvent, function ($query) {
-    //         $query->where('eventname', $this->selectedEvent);
-    //     })
-    //     ->where('eventname', 'like', $search)
-    //     ->select('eventname',
-    //         DB::raw('COUNT(DISTINCT user_id) as total_respondents'),
-    //         DB::raw('SUM(stronglyagree) as stronglyagree'),
-    //         DB::raw('SUM(agree) as agree'),
-    //         DB::raw('SUM(moderatelyagree) as moderatelyagree'),
-    //         DB::raw('SUM(disagree) as disagree'),
-    //         DB::raw('SUM(strongdisagree) as stronglydisagree'))
-    //     ->groupBy('eventname')
-    //     ->paginate(1);
-
-    //     // Fetch program activity ratings for the selected event
-    //     $programActivityRatings = DB::table('program_activity_ratings') // Assuming this is the correct table
-    //         ->when($this->selectedEvent, function ($query) {
-    //             $query->where('eventname', $this->selectedEvent);
-    //         })
-    //         ->select('eventname',
-    //             DB::raw('SUM(stronglyagree) as program_stronglyagree'),
-    //             DB::raw('SUM(agree) as program_agree'),
-    //             DB::raw('SUM(moderatelyagree) as program_moderatelyagree'),
-    //             DB::raw('SUM(disagree) as program_disagree'),
-    //             DB::raw('SUM(stronglydisagree) as program_stronglydisagree'))
-    //         ->groupBy('eventname')
-    //         ->get();
-
-    //     // Merge program activity ratings into event ratings based on eventname
-    //     $eventRatings->each(function ($rating) use ($programActivityRatings) {
-    //         // Find the corresponding program activity rating based on eventname
-    //         $programRating = $programActivityRatings->firstWhere('eventname', $rating->eventname);
-
-    //         // If found, merge program activity data into the event rating
-    //         if ($programRating) {
-    //             $rating->program_stronglyagree = $programRating->program_stronglyagree;
-    //             $rating->program_agree = $programRating->program_agree;
-    //             $rating->program_moderatelyagree = $programRating->program_moderatelyagree;
-    //             $rating->program_disagree = $programRating->program_disagree;
-    //             $rating->program_stronglydisagree = $programRating->program_stronglydisagree;
-    //         }
-    //     });
-
-    //     return view('livewire.admin.index', [
-    //         'eventRatings' => $eventRatings,
-    //         'programActivityRatings' => $programActivityRatings,
-    //         'eventsList' => $eventsList,
-    //     ]);
-    // }
-
     public function render()
     {
         $search = '%' . $this->search . '%';
@@ -261,6 +137,9 @@ class Index extends Component
             }
         });
 
+
+
+
         return view('livewire.admin.index', [
             'eventRatings' => $eventRatings,
             'programActivityRatings' => $programActivityRatings,
@@ -268,6 +147,7 @@ class Index extends Component
             'accommodationRatings' => $accommodationRatings,
             'speakerRatings' => $speakerRatings,
             'eventsList' => $eventsList,
+         //'eventQuestions' => $eventQuestions,
         ]);
     }
 
