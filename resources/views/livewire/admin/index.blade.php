@@ -115,7 +115,7 @@ $speakerRatings = DB::table('speaker_ratings')
 
         <div class="mt-6">
 
-            <div class="mt-6">
+            {{-- <div class="mt-6">
                 <h3 class="text-lg font-semibold">Evaluation Questions & Ratings</h3>
 
                 <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
@@ -159,7 +159,69 @@ $speakerRatings = DB::table('speaker_ratings')
                         @endforeach
                     </tbody>
                 </table>
+            </div> --}}
+
+            <div class="mt-6">
+                <h3 class="text-lg font-semibold mb-4">Detailed Questions Evaluation</h3>
+
+                <table class="min-w-full bg-white border border-gray-300 rounded-lg shadow-md">
+                    <thead class="bg-gray-200">
+                        <tr>
+                            <th class="py-2 px-4 border-b text-left">Category</th>
+                            <th class="py-2 px-4 border-b text-left">Question</th>
+                            <th class="py-2 px-4 border-b text-center">Mean Rating</th>
+                            <th class="py-2 px-4 border-b text-center">Interpretation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($eventQuestions as $question)
+                            @php
+                                $ratings = match ($question->category_name) {
+                                    'Program Activities' => $programRatings,
+                                    'Venue' => $venueRatings,
+                                    'Accommodations' => $accommodationRatings,
+                                    'Speakers' => $speakerRatings,
+                                    default => null,
+                                };
+
+                                if ($ratings) {
+                                    $total = $ratings->stronglyagree + $ratings->agree + $ratings->moderatelyagree +
+                                             $ratings->disagree + $ratings->stronglydisagree;
+                                    $mean = $total > 0 ?
+                                        (($ratings->stronglyagree * 5) + ($ratings->agree * 4) + ($ratings->moderatelyagree * 3) +
+                                        ($ratings->disagree * 2) + ($ratings->stronglydisagree * 1)) / $total : 0;
+                                }
+                            @endphp
+
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="py-2 px-4 border-r text-left font-semibold">{{ $question->category_name }}</td>
+                                <td class="py-2 px-4 border-r text-left">{{ $question->question }}</td>
+
+                                @if ($ratings)
+                                    <td class="py-2 px-4 text-center font-medium
+                                        @if($mean >= 4) text-green-600
+                                        @elseif($mean >= 3) text-blue-600
+                                        @elseif($mean >= 2) text-yellow-600
+                                        @else text-red-600
+                                        @endif">
+                                        {{ number_format($mean, 2) }}
+                                    </td>
+                                    <td class="py-2 px-4 text-center text-gray-600">{{ $this->getRatingInterpretation($mean) }}</td>
+                                @else
+                                    <td class="py-2 px-4 text-center text-gray-500" colspan="2">No ratings available</td>
+                                @endif
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
+
+            <!-- Visualization -->
+            <div class="mt-6">
+                <canvas id="chart{{ $loop->index }}" class="w-full h-56"></canvas>
+            </div>
+        </div>
+
 
         </div>
     </div>

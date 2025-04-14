@@ -19,7 +19,20 @@ class Index extends Component
     public function view(){
         $this->render();
     }
-
+    public function getRatingInterpretation($mean)
+    {
+        if ($mean >= 4.5) {
+            return 'Strongly Agree';
+        } elseif ($mean >= 3.5) {
+            return 'Agree';
+        } elseif ($mean >= 2.5) {
+            return 'Moderately Agree';
+        } elseif ($mean >= 1.5) {
+            return 'Disagree';
+        } else {
+            return 'Strongly Disagree';
+        }
+    }
     public function render()
     {
         $search = '%' . $this->search . '%';
